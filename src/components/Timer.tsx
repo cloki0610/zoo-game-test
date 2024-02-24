@@ -1,17 +1,16 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+
+import { GameContext } from "../store/GameContext";
 import { fadeIn, slideIn } from "../utils/motion";
 
-interface TimerProps {
-  timeRemain: number;
-  timeout: number;
-}
-
-const Timer = ({ timeRemain, timeout }: TimerProps) => {
+const Timer = () => {
+  // Get state from context
+  const { time, remain } = useContext(GameContext);
   const [displayTimer, setDisplayTimer] = useState<boolean>(false);
   const toggleTimer = () => setDisplayTimer((prevState) => !prevState);
-  const min = Math.floor(timeRemain / 1000 / 60);
-  const sec = timeRemain / 1000 - min * 60;
+  const min = Math.floor(remain / 1000 / 60);
+  const sec = remain / 1000 - min * 60;
 
   return (
     <motion.div animate={{ height: displayTimer ? 200 : 100 }}>
@@ -48,8 +47,8 @@ const Timer = ({ timeRemain, timeout }: TimerProps) => {
               variants={fadeIn("up", "spring", 0, 1)}
               initial="hidden"
               animate="show"
-              max={timeout}
-              value={timeRemain}
+              max={time}
+              value={remain}
               className="w-full [&::-webkit-progress-value]:bg-gradient-to-r from-teal-400 to-teal-700
           [&::-webkit-progress-value]:transition-[width] [&::-webkit-progress-value]:ease-in-out 
           [&::-webkit-progress-value]:duration-500"

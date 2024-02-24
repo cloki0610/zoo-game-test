@@ -1,18 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { motion } from "framer-motion";
-import { useZoo } from "../hooks/useZoo";
-import { fadeIn } from "../utils/motion";
+
 import AnimalCard from "./AnimalCard";
+import { GameContext } from "../store/GameContext";
+import { fadeIn } from "../utils/motion";
 
-interface FenceProps {
-  remain: number;
-  resetTimer: () => void;
-}
+function Fence() {
+  // Get state from context
+  const { remain, zoo, resetTimer, feedAnimal, healthReduce } =
+    useContext(GameContext);
 
-function Fence({ remain, resetTimer }: FenceProps) {
-  // useZoo (custom hook): to manage the data for current zoo component
-  // It will expose 3 function to reset
-  const { zoo, feedAnimal, healthReduce } = useZoo(5, 5, 5);
   // useEffect hook: to check the remain props, if it is no remain time(<=0),
   // Then health will reduce because time pass and update conditions
   useEffect(() => {
